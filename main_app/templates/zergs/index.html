@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Zerg List</h1>
+
+{% for zerg in zergs %}
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{{ zerg.name }}</span>
+      <p>Description: {{ zerg.description }}</p>
+      <p>Minerals: {{ zerg.minerals }}</p>
+      {% if zerg.vespene > 0 %}
+        <p>Vespene: {{ zerg.vespene }}</p>
+      {% else %}
+        <p>No Vespene Cost</p>
+      {% endif %}
+    </div>
+  </div>
+{% endfor %}
+
+{% endblock %}
