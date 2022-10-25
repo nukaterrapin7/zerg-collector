@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic.edit import CreateView
 from .models import Zerg
 
 # Create your views here.
@@ -16,3 +17,7 @@ def zergs_index(request):
 def zergs_detail(request, zerg_id):
     zerg = Zerg.objects.get(id=zerg_id)
     return render(request, 'zergs/detail.html', { 'zerg': zerg})
+
+class ZergCreate(CreateView):
+    model = Zerg
+    fields = '__all__'

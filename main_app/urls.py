@@ -6,4 +6,5 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('zergs/', views.zergs_index, name='index'),
     path('zergs/<int:zerg_id>/', views.zergs_detail, name='detail'),
+    path('zergs/create/', views.ZergCreate.as_view(), name='zergs_create'),
 ]
