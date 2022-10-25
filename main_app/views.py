@@ -12,3 +12,7 @@ def about(request):
 def zergs_index(request):
     zergs = Zerg.objects.all()
     return render(request, 'zergs/index.html', { 'zergs': zergs })
+
+def zergs_detail(request, zerg_id):
+    zerg = Zerg.objects.get(id=zerg_id)
+    return render(request, 'zergs/detail.html', { 'zerg': zerg})
