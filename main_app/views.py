@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Zerg
 
 # Create your views here.
@@ -21,3 +21,11 @@ def zergs_detail(request, zerg_id):
 class ZergCreate(CreateView):
     model = Zerg
     fields = '__all__'
+
+class ZergUpdate(UpdateView):
+    model = Zerg
+    fields = ['description', 'minerals', 'vespene']
+
+class ZergDelete(DeleteView):
+    model = Zerg
+    success_url = '/zergs/'

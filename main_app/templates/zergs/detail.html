@@ -14,6 +14,10 @@
       <p>No Vespene Cost</p>
   {% endif %}
   </div>
+  <div class="card-action">
+    <a href="{% url 'zergs_update' zerg.id %}">Edit</a>
+    <a href="{% url 'zergs_delete' zerg.id %}">Delete</a>
+  </div>
 </div>
 
 {% endblock %}
