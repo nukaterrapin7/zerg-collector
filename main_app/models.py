@@ -22,8 +22,8 @@ class Zerg(models.Model):
         return reverse('detail', kwargs={'zerg_id': self.id})
 
 class Essence(models.Model):
-    date = models.DateField('absorbtion date')
-    amount = models.CharField(
+    date = models.DateField('Absorbtion Date')
+    absorbtions = models.CharField(
         max_length=1,
         choices=ABSORBTIONS,
         default=ABSORBTIONS[0][0]
@@ -32,4 +32,4 @@ class Essence(models.Model):
     zerg = models.ForeignKey(Zerg, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.get_absorbtion_display()} on {self.date}"
+        return f"{self.get_absorbtions_display()} on {self.date}"

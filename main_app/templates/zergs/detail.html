@@ -3,21 +3,41 @@
 
 <h1>Zerg Details</h1>
 
-<div class="card">
-  <div class="card-content">
-  <span class="card-title">{{ zerg.name }}</span>
-  <p>Description: {{ zerg.description|linebreaks }}</p>
-  <p>Minerals: {{ zerg.minerals }}</p>
-  {% if zerg.vespene > 0 %}
-      <p>Vespene: {{ zerg.vespene }}</p>
-  {% else %}
-      <p>No Vespene Cost</p>
-  {% endif %}
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+      <span class="card-title">{{ zerg.name }}</span>
+      <p>Description: {{ zerg.description|linebreaks }}</p>
+      <p>Minerals: {{ zerg.minerals }}</p>
+      {% if zerg.vespene > 0 %}
+          <p>Vespene: {{ zerg.vespene }}</p>
+      {% else %}
+          <p>No Vespene Cost</p>
+      {% endif %}
+      </div>
+      <div class="card-action">
+        <a href="{% url 'zergs_update' zerg.id %}">Edit</a>
+        <a href="{% url 'zergs_delete' zerg.id %}">Delete</a>
+      </div>
+    </div>
   </div>
-  <div class="card-action">
-    <a href="{% url 'zergs_update' zerg.id %}">Edit</a>
-    <a href="{% url 'zergs_delete' zerg.id %}">Delete</a>
-  </div>
+</div>
+<div class="col s6">
+  <table class="striped">
+    <thead>
+      <tr><th>Date</th><th>Absorbtion</th></tr>
+    </thead>
+    <tbody>
+      {% for essence in zerg.essence_set.all %}
+        <tr>
+          <td>{{essence.date}}</td>
+          <td>{{essence.get_absorbtion_display}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 </div>
 
 {% endblock %}
