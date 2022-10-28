@@ -22,22 +22,39 @@
       </div>
     </div>
   </div>
+  <div class="col s6">
+    <form action="{% url 'add_essence' zerg.id %}" method="POST">
+      {% csrf_token %}
+      {{ essence_form.as_p }}
+      <input type="submit" class="btn" value="Add Essence">
+    </form>  
+    <table class="striped">
+      <thead>
+        <tr><th>Date</th><th>Absorbtion</th></tr>
+      </thead>
+      <tbody>
+        {% for essence in zerg.essence_set.all %}
+          <tr>
+            <td>{{essence.date}}</td>
+            <td>{{essence.get_absorbtions_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
-<div class="col s6">
-  <table class="striped">
-    <thead>
-      <tr><th>Date</th><th>Absorbtion</th></tr>
-    </thead>
-    <tbody>
-      {% for essence in zerg.essence_set.all %}
-        <tr>
-          <td>{{essence.date}}</td>
-          <td>{{essence.get_absorbtion_display}}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-</div>
+
+<script>
+  const dateEl = document.getElementById('id_date');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+
+  const selectEl = document.getElementById('id_absorbtions');
+  M.FormSelect.init(selectEl);
+</script>
 
 {% endblock %}

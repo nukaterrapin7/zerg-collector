@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Zerg
+from .forms import EssenceForm
 
 # Create your views here.
 
@@ -16,7 +17,19 @@ def zergs_index(request):
 
 def zergs_detail(request, zerg_id):
     zerg = Zerg.objects.get(id=zerg_id)
-    return render(request, 'zergs/detail.html', { 'zerg': zerg})
+    essence_form = EssenceForm()
+    return render(request, 'zergs/detail.html', {
+        'zerg': zerg, 'essence_form': essence_form
+    })
+
+def add_essence(request, zerg_id):
+  form = EssenceForm(request.POST)
+  if form.is_valid():
+    new_essence = form.save(commit=False)
+    new_essence.zerg_id = zerg_id
+    new_essence.save()
+  return redirect('detail', zerg_id=zerg_id)
+
 
 class ZergCreate(CreateView):
     model = Zerg
