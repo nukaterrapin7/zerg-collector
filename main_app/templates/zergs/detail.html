@@ -43,6 +43,48 @@
     </table>
   </div>
 </div>
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ zerg.name }}'s Enemies</h3>
+    {% if zerg.enemies.count %}
+      {% for enemy in zerg.enemies.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A {{ enemy.race }} <span>{{ enemy.name }}</span> 
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Enemies >:D</h5>
+    {% endif %}
+  </div>
+  <!-- Available toys will come after this line -->
+  <div class="col s6">
+  <h3>Available Enemies</h3>
+  {% if enemies.count %}
+    {% for enemy in enemies.all %}
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">
+            A {{ enemy.race }} <span>{{ enemy.name }}</span>
+          </span>
+        </div>
+        <div class="card-action">
+          <form action="{% url 'assoc_enemy' zerg.id enemy.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn">Add</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <h5>{{zerg.name}} Already Has All Enemies Available</h5>
+  {% endif %}
+</div>
+
 
 <script>
   const dateEl = document.getElementById('id_date');

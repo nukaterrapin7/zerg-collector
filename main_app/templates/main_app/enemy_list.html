@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Enemy List</h1>
+
+{% for enemy in enemies_list %}
+  <a href="{% url 'enemies_detail' enemy.id %}">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ enemy.name }}</span>
+            <p>Race: {{ enemy.race }}</p>
+        </div>
+    </div>
+  </a>
+{% endfor %}
+
+{% endblock %}

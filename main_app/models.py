@@ -7,13 +7,34 @@ ABSORBTIONS = (
     ('L', 'Large'),
 )
 
+RACES = (
+    ('T', 'Terran'),
+    ('P', 'Protoss'),
+    ('Z', 'Zerg'),
+)
+
 # Create your models here.
+
+class Enemy(models.Model):
+    name = models.CharField(max_length=50)
+    race = models.CharField(max_length=1,
+        choices=RACES,
+        default=RACES[0][0]
+        )
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('enemies_detail', kwargs={'pk': self.id})
+
 
 class Zerg(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     minerals = models.IntegerField()
     vespene = models.IntegerField()
+    enemies = models.ManyToManyField(Enemy)
 
     def __str__(self):
         return self.name
