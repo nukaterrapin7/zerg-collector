@@ -57,3 +57,10 @@ class Essence(models.Model):
 
     class Meta:
         ordering = ['-date']
+
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    zerg = models.ForeignKey(Zerg, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for zerg_id: {self.zerg_id} @{self.url}"
