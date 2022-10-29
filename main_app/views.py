@@ -62,7 +62,7 @@ class EnemyCreate(LoginRequiredMixin, CreateView):
 
 class EnemyUpdate(LoginRequiredMixin, UpdateView):
   model = Enemy
-  fields = ['name', 'color']
+  fields = ['name', 'race']
 
 class EnemyDelete(LoginRequiredMixin, DeleteView):
   model = Enemy

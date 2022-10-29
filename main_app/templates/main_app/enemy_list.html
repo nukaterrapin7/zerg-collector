@@ -7,8 +7,8 @@
   <a href="{% url 'enemies_detail' enemy.id %}">
     <div class="card">
         <div class="card-content">
-            <span class="card-title">{{ enemy.name }}</span>
-            <p>Race: {{ enemy.race }}</p>
+            <span class="card-title">{{ enemy.get_name_display }}</span>
+            <p>Race: {{ enemy.get_race_display }}</p>
         </div>
     </div>
   </a>
