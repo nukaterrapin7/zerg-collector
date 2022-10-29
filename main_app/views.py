@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Enemy, Zerg, Enemy, Photo
 from .forms import EssenceForm
 import uuid
@@ -16,10 +20,12 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+@login_required
 def zergs_index(request):
-    zergs = Zerg.objects.all()
+    zergs = Zerg.objects.filter(user=request.user)
     return render(request, 'zergs/index.html', { 'zergs': zergs })
 
+@login_required
 def zergs_detail(request, zerg_id):
     zerg = Zerg.objects.get(id=zerg_id)
     id_list = zerg.enemies.all().values_list('id')
@@ -30,6 +36,7 @@ def zergs_detail(request, zerg_id):
         'enemies': enemis_zerg_doesnt_have
     })
 
+@login_required
 def add_essence(request, zerg_id):
   form = EssenceForm(request.POST)
   if form.is_valid():
@@ -38,38 +45,42 @@ def add_essence(request, zerg_id):
     new_essence.save()
   return redirect('detail', zerg_id=zerg_id)
 
-# @login_required
+@login_required
 def assoc_enemy(request, zerg_id, enemy_id):
   Zerg.objects.get(id=zerg_id).enemies.add(enemy_id)
   return redirect('detail', zerg_id=zerg_id)
 
-class EnemyList(ListView):
+class EnemyList(LoginRequiredMixin, ListView):
   model = Enemy
 
-class EnemyDetail(DetailView):
+class EnemyDetail(LoginRequiredMixin, DetailView):
   model = Enemy
 
-class EnemyCreate(CreateView):
+class EnemyCreate(LoginRequiredMixin, CreateView):
   model = Enemy
   fields = '__all__'
 
-class EnemyUpdate(UpdateView):
+class EnemyUpdate(LoginRequiredMixin, UpdateView):
   model = Enemy
   fields = ['name', 'color']
 
-class EnemyDelete(DeleteView):
+class EnemyDelete(LoginRequiredMixin, DeleteView):
   model = Enemy
   success_url = '/enemies/'
 
-class ZergCreate(CreateView):
+class ZergCreate(LoginRequiredMixin, CreateView):
     model = Zerg
     fields = ['name', 'description', 'minerals', 'vespene']
 
-class ZergUpdate(UpdateView):
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+class ZergUpdate(LoginRequiredMixin, UpdateView):
     model = Zerg
     fields = ['description', 'minerals', 'vespene']
 
-class ZergDelete(DeleteView):
+class ZergDelete(LoginRequiredMixin, DeleteView):
     model = Zerg
     success_url = '/zergs/'
 
@@ -87,3 +98,17 @@ def add_photo(request, zerg_id):
             print('An error occurred uploading file to S3')
             print(e)
     return redirect('detail', zerg_id=zerg_id)
+
+def signup(request):
+  error_message = ''
+  if request.method == 'POST':
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      user = form.save()
+      login(request, user)
+      return redirect('index')
+    else:
+      error_message = 'Invalid sign up - try again'
+  form = UserCreationForm()
+  context = {'form': form, 'error_message': error_message}
+  return render(request, 'registration/signup.html', context)

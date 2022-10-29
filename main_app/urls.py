@@ -16,5 +16,6 @@ urlpatterns = [
     path('enemies/create/', views.EnemyCreate.as_view(), name='enemies_create'),
     path('enemies/<int:pk>/update/', views.EnemyUpdate.as_view(), name='enemies_update'),
     path('enemies/<int:pk>/delete/', views.EnemyDelete.as_view(), name='enemies_delete'),
+    path('accounts/signup/', views.signup, name='signup'),
     path('zergs/<int:zerg_id>/add_photo/', views.add_photo, name='add_photo'),
 ]
